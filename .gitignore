@@ -1,9 +1,0 @@
-# add files as necessary
-# lines starting with # are comments
-bin/
-data/
-*.class
-# Package Files
-*.zip
-*.war
-*.ear
