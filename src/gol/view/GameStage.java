@@ -24,8 +24,8 @@ public class GameStage extends Stage {
 
 	public GameStage(GameController control) {
 		this.control = control;
-		cellsNumberWidth = control.getCellNumber(0);
-		cellsNumberHeight = control.getCellNumber(1);
+		cellsNumberHeight = control.getNumberOfCells(0);
+		cellsNumberWidth = control.getNumberOfCells(1);
 
 		Group gridGroup = new Group();
 		board = new Group(gridGroup);

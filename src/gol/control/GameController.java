@@ -27,7 +27,7 @@ public class GameController {
 		model.startGame();
 	}
 
-	public int getCellNumber(int i) {
+	public int getNumberOfCells(int i) {
 		if (i == 0) {
 			System.out.println("Height = " + model.getGameheight());
 			return model.getGameheight();
@@ -87,7 +87,7 @@ public class GameController {
 		ArrayList<GameCell> gameCells = model.getGameCells();
 		ArrayList<Label> labels = view.getLabels();
 		
-		System.out.println("Labels: " + labels.size() +"\n" + "Cells " + gameCells.size());
+		System.out.println("Labels: " + labels.size() +"\n" + "Cells: " + gameCells.size());
 		
 		for(int i=0; i<gameCells.size(); i++){
 			Label label = labels.get(i);
@@ -97,8 +97,8 @@ public class GameController {
 			BooleanProperty activeProperty = label.visibleProperty();
 			BooleanProperty gameCellAlive = gameCell.getIsAlive();
 			
-			activeProperty.bind(gameCellAlive);
-			//gameCellAlive.bindBidirectional(activeProperty);
+			//activeProperty.bind(gameCellAlive);
+			gameCellAlive.bindBidirectional(activeProperty);
 			System.out.println("Bindings Done!");
 		}
 	}
