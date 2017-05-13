@@ -3,6 +3,7 @@ package gol.control;
 import java.util.ArrayList;
 
 import gol.model.GameCell;
+import gol.model.GameLogic;
 import gol.model.GameModel;
 import gol.view.GameStage;
 import javafx.beans.property.BooleanProperty;
@@ -13,6 +14,7 @@ public class GameController {
 	private GameModel model;
 	private GameStage view;
 	private Integer cellSize;
+	private GameLogic logic;
 
 	public GameController(GameModel model) {
 		this.model = model;
@@ -49,7 +51,6 @@ public class GameController {
 	public void deleteCell(double x, double y) {
 	
 		model.deactivateGameCell(x, y);
-		//view.deactivateLabel(x,y);
 	}
 
 	public void activateGameCell(double layoutX, double layoutY) {
@@ -70,9 +71,6 @@ public class GameController {
 		ArrayList<GameCell> gameCells = model.getGameCells();
 
 		cellSize = view.getCellSize();
-
-		//
-		
 		for (GameCell cell : gameCells) {
 				//Left, Right Hand Neighbors
 			if (layoutX - 1 == cell.getX() && layoutY == cell.getY()||
@@ -84,8 +82,7 @@ public class GameController {
 				layoutX - 1 == cell.getX() && layoutY - 1 == cell.getY()||
 				layoutX - 1 == cell.getX() && layoutY + 1 == cell.getY()||
 				layoutX + 1 == cell.getX() && layoutY - 1 == cell.getY()||
-				layoutX + 1 == cell.getX() && layoutY + 1 == cell.getY()
-					) {
+				layoutX + 1 == cell.getX() && layoutY + 1 == cell.getY()) {
 				
 				if (cell.isAlive()) {
 					System.out.println("Cell width: " + cell.getX() + "Cell height: " + cell.getY());
@@ -117,5 +114,18 @@ public class GameController {
 			gameCellAlive.bindBidirectional(activeProperty);
 			System.out.println("Bindings Done!");
 		}
+	}
+
+	public void resetGame() {
+		model.deactivateAllGameCells();
+	}
+
+	public void startGame() {
+		logic = new GameLogic(model,this);
+		logic.startGame();
+	}
+
+	public void pauseGame() {
+		logic.pauseGame();
 	}
 }

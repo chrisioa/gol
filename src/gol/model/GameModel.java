@@ -103,4 +103,10 @@ public class GameModel {
 		return cellSize;
 	}
 
+	public void deactivateAllGameCells() {
+		for(GameCell gc : gameCells){
+			gc.setAlive(false);
+		}
+	}
+
 }
