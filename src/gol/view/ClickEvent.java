@@ -40,14 +40,11 @@ public class ClickEvent implements javafx.event.EventHandler<MouseEvent> {
 					// Check if alive
 					if (existingLabel.isVisible()) {
 						// Set visibility false
-						//changeVisibilityTo(existingLabel, false);
-						controller.deleteCell((int) event.getY() / cellSize, (int) event.getX() / cellSize);
+						controller.deleteCell((int) event.getX() / cellSize, (int) event.getY() / cellSize);
 						break;
 					} else {
-						//If dead, activate
-						//changeVisibilityTo(existingLabel, true);
 						//Activate in Model
-						controller.activateGameCell((int) event.getY() / cellSize, (int) event.getX() / cellSize);
+						controller.activateGameCell((int) event.getX() / cellSize, (int) event.getY() / cellSize);
 					}
 				}
 			}
@@ -58,20 +55,11 @@ public class ClickEvent implements javafx.event.EventHandler<MouseEvent> {
 			controller.deleteCell((int) event.getX() / cellSize, (int) event.getY() / cellSize);
 
 		} else {
-
 		}
 
-		System.out.println("Mouse X-Coordinate: " + event.getX() / cellSize);
-		System.out.println("Mouse Y-Coordinate: " + event.getY() / cellSize);
-
-		System.out.println("Label X-Coordinate: " + label.getLayoutX());
-		System.out.println("Label Y-Coordinate: " + label.getLayoutY());
 
 	}
 
-	//private void changeVisibilityTo(Node existingLabel, boolean bool) {
-	//	existingLabel.setVisible(bool);
-	//}
 
 	private Label createLabel(int width, int height) {
 

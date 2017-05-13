@@ -10,9 +10,9 @@ public class GameCell {
 	private double x;
 	private double y;
 	
-	public GameCell(double height, double width, boolean isAlive){
-		setY(height);
-		setX(width);
+	public GameCell(double width, double height,  boolean isAlive){
+		x = width;
+		y = height;
 		setAlive(isAlive);
 	}
 	
@@ -20,7 +20,7 @@ public class GameCell {
 		return isAliveProperty.get();
 	}
 	public void setAlive(boolean isAlive) {
-		System.out.println("Set alive cell with height: " + y + " width: " + x);
+		System.out.println("Set alive X: " + x + " Y: " + y);
 		isAliveProperty.set(isAlive);
 		
 	}
@@ -31,24 +31,14 @@ public class GameCell {
 	}
 
 
-	public void setY(double y) {
-		this.y = y;
-	}
-
-
 	public double getX() {
 		return x;
 	}
 
 
-	public void setX(double x) {
-		this.x = x;
-	}
-
 	public BooleanProperty getIsAlive() {
 		
 		return isAliveProperty;
 	}
-
 	
 }

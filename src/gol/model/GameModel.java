@@ -7,7 +7,7 @@ public class GameModel {
 	private int gamewidth;
 	private int gameheight;
 	private double cellSize;
-	private GameLogic logic;
+	//private GameLogic logic;
 	
 	private ArrayList<GameCell> gameCells = new ArrayList<>();
 
@@ -24,12 +24,12 @@ public class GameModel {
 			}
 		}
 		
-		logic = new GameLogic(this);
+		//logic = new GameLogic(this);
 
 	}
 
 	public void startGame(){
-		logic.startGame();
+		//logic.startGame();
 	}
 	
 	// Activate GameCell

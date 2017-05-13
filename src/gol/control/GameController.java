@@ -55,7 +55,11 @@ public class GameController {
 	public void activateGameCell(double layoutX, double layoutY) {
 		model.activateGameCell(layoutX, layoutY);
 
-		//ArrayList<GameCell> neighbors = checkSurroundings(layoutX, layoutY);
+		ArrayList<GameCell> neighbors = checkSurroundings(layoutX, layoutY);
+		for(int i = 0; i < neighbors.size(); i++){
+			GameCell currentCell = neighbors.get(i);
+			System.out.println("X: " + currentCell.getX()+" Y: " + currentCell.getY());
+		}
 
 	}
 
@@ -67,12 +71,24 @@ public class GameController {
 
 		cellSize = view.getCellSize();
 
+		//
+		
 		for (GameCell cell : gameCells) {
-			if (layoutX - 1 == cell.getX() || layoutX + 1 == cell.getX() || layoutY - 1 == cell.getY()
-					|| layoutX + 1 == cell.getY()) {
+				//Left, Right Hand Neighbors
+			if (layoutX - 1 == cell.getX() && layoutY == cell.getY()||
+				layoutX + 1 == cell.getX() && layoutY == cell.getY()||	
+				//Upper, Lower Neighbors
+				layoutX == cell.getX() && layoutY-1 == cell.getY()||	
+				layoutX == cell.getX() && layoutY+1 == cell.getY()||
+				//Diagonal Neighbors
+				layoutX - 1 == cell.getX() && layoutY - 1 == cell.getY()||
+				layoutX - 1 == cell.getX() && layoutY + 1 == cell.getY()||
+				layoutX + 1 == cell.getX() && layoutY - 1 == cell.getY()||
+				layoutX + 1 == cell.getX() && layoutY + 1 == cell.getY()
+					) {
+				
 				if (cell.isAlive()) {
 					System.out.println("Cell width: " + cell.getX() + "Cell height: " + cell.getY());
-					deleteCell(cell.getX(), cell.getY());
 					neighbors.add(cell);
 				}
 			}
