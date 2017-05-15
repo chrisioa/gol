@@ -1,21 +1,23 @@
 package gol.view;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import gol.control.GameController;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class GameStage extends Stage {
 
@@ -39,9 +41,12 @@ public class GameStage extends Stage {
 		this.setTitle("New Game");
 
 		BorderPane bp = new BorderPane(board);
-		// Make and Set MenuBar
-		MenuBar menuBar = makeMenuBar();
+		// Make and set MenuBar
+		MenuBar menuBar = new MyMenubar(control);
 		bp.setTop(menuBar);
+		// Make and set Toolbar
+		ToolBar toolbar = new MyToolbar("id", control);
+		bp.setBottom(toolbar);
 		Scene scene = new Scene(bp);
 		this.setScene(scene);
 
@@ -55,44 +60,16 @@ public class GameStage extends Stage {
 		createLabels(board);
 		// set clickevent
 		board.setOnMouseClicked(new ClickEvent(this, board, control));
-
-	}
-
-	private MenuBar makeMenuBar() {
-		MenuBar mb = new MenuBar();
-
-		Menu file = new Menu("File");
-		// MenuItems erzeugen
-		MenuItem startGame = new MenuItem("Start");
-		startGame.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event){
-				control.startGame();
-			}
-		});
-		MenuItem pauseGame = new MenuItem("Pause");
-		pauseGame.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event){
+		
+		this.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			
+			@Override
+			public void handle(WindowEvent event) {
+				alertCloseView();
 				control.pauseGame();
 			}
 		});
-		
-		MenuItem resetGame = new MenuItem("Reset");
-		resetGame.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				control.resetGame();
-			}
-		});
-		// MenuItems zu Menu hinzufuegen
-		file.getItems().add(startGame);
-		file.getItems().add(pauseGame);
-		file.getItems().add(resetGame);
-		Menu about = new Menu("About");
-		// Menu zu MenuBar hinzufuegen
-		mb.getMenus().add(file);
-		mb.getMenus().add(about);
 
-		return mb;
 	}
 
 	private void createLabels(Group board) {
@@ -131,6 +108,19 @@ public class GameStage extends Stage {
 				}));
 
 	}
+	
+	public void alertCloseView() {
+		Alert exitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+		exitAlert.setTitle("Exit");
+		exitAlert.setHeaderText("If you close the program all unsaved changes will be lost!");
+		exitAlert.setContentText("Do you want to exit?");
+		Optional<ButtonType> result = exitAlert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			close();
+		}
+	}
+
+	
 
 	public int getCellSize() {
 		return cellSize;

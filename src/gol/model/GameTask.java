@@ -28,7 +28,7 @@ public class GameTask implements Runnable {
 	
 	}
 
-	private void performStep() {
+	public void performStep() {
 		gameCells = controller.getGameCells();
 
 			ArrayList<GameCell> neighbors;

@@ -134,16 +134,21 @@ public class GameController {
 		runGame.pause();
 
 		exService.shutdown();
-		while (!exService.isTerminated()) {
+		
 			try {
 				exService.awaitTermination(1, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
+		
 	}
 
 	public ArrayList<GameCell> getGameCells() {
 		return model.getGameCells();
+	}
+
+	public void performOneStep() {
+		GameTask game= new GameTask(this);
+		game.performStep();
 	}
 }
