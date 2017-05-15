@@ -8,6 +8,7 @@ public class GameTask implements Runnable {
 	private ArrayList<GameCell> gameCells = new ArrayList<>();
 	private boolean running=true;
 	private GameController controller;
+	//Wait between steps in ms
 
 	public GameTask(GameController controller) {
 		this.controller=controller;
@@ -21,7 +22,7 @@ public class GameTask implements Runnable {
 			try {
 				//TODO: Make a slider or something 
 				//This effectively is the speed of the game (Wait between steps)
-				Thread.sleep(500);
+				Thread.sleep(getGameSpeed());
 			} catch (InterruptedException ignored) {
 			}
 		}
@@ -86,6 +87,10 @@ public class GameTask implements Runnable {
 		}
 		System.out.println("Neighbors: " + neighbors);
 		return neighbors;
+	}
+
+	public int getGameSpeed() {
+		return controller.getGameSpeed();
 	}
 
 }

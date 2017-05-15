@@ -19,6 +19,8 @@ public class GameController {
 	private Integer cellSize;
 	private GameTask runGame;
 	ExecutorService exService;
+	private int gameSpeed = 100;
+	private boolean running = false;
 
 	public GameController(GameModel model) {
 		this.model = model;
@@ -123,24 +125,29 @@ public class GameController {
 	}
 
 	public void startGame() {
-		exService = Executors.newCachedThreadPool();
-		runGame = new GameTask(this);
-		System.out.println("Run!");
-		exService.execute(runGame);
+		//Check if already running or not!
+		if (!running) {
+			setRunning(true);
+			exService = Executors.newCachedThreadPool();
+			runGame = new GameTask(this);
+			System.out.println("Run!");
+			exService.execute(runGame);
+		}
 
 	}
 
 	public void pauseGame() {
+		setRunning(false);
 		runGame.pause();
 
 		exService.shutdown();
-		
-			try {
-				exService.awaitTermination(1, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		
+
+		try {
+			exService.awaitTermination(1, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public ArrayList<GameCell> getGameCells() {
@@ -148,7 +155,24 @@ public class GameController {
 	}
 
 	public void performOneStep() {
-		GameTask game= new GameTask(this);
+		GameTask game = new GameTask(this);
 		game.performStep();
+	}
+
+	public int getGameSpeed() {
+		return gameSpeed;
+	}
+
+	public void setGameSpeed(double gameSpeed) {
+		System.out.println("New Game Speed: " + gameSpeed);
+		this.gameSpeed = (int) gameSpeed;
+	}
+
+	public boolean isRunning() {
+		return running;
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 }

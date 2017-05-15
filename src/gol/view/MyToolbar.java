@@ -4,6 +4,7 @@ import gol.control.GameController;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
 
 public class MyToolbar extends ToolBar{
@@ -14,8 +15,6 @@ public class MyToolbar extends ToolBar{
 		this.control = control;
 		
 		initToolbar();
-				
-
 	}
 
 	private void initToolbar() {
@@ -50,5 +49,17 @@ public class MyToolbar extends ToolBar{
 					}
 				});
 				this.getItems().add(pauseButton);
+	
+		//Slider TODO: Implement this
+				Slider gameSpeedSlider = new Slider(10, 5000, 500);
+				gameSpeedSlider.setOnDragDone(new EventHandler<Event>() {
+
+					@Override
+					public void handle(Event event) {
+						System.out.println(gameSpeedSlider.getValue());
+						control.setGameSpeed(gameSpeedSlider.getValue());
+					}
+				});
+				this.getItems().add(gameSpeedSlider);
 	}
 }

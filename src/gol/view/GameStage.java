@@ -66,6 +66,7 @@ public class GameStage extends Stage {
 			@Override
 			public void handle(WindowEvent event) {
 				alertCloseView();
+				//TODO: Null CHECK!!!!
 				control.pauseGame();
 			}
 		});
