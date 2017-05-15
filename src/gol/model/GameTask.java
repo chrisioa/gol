@@ -2,18 +2,34 @@ package gol.model;
 
 import java.util.ArrayList;
 
+import gol.control.GameController;
+
 public class GameTask implements Runnable {
 	private ArrayList<GameCell> gameCells = new ArrayList<>();
-	private GameModel model;
+	private boolean running=true;
+	private GameController controller;
 
-	public GameTask(GameModel model) {
-		this.model = model;
+	public GameTask(GameController controller) {
+		this.controller=controller;
 	}
-
+	
 	@Override
 	public void run() {
-		gameCells = model.getGameCells();
+	
+		while(running){
+			performStep();	
+			try {
+				//TODO: Make a slider or something 
+				//This effectively is the speed of the game (Wait between steps)
+				Thread.sleep(500);
+			} catch (InterruptedException ignored) {
+			}
+		}
+	
+	}
 
+	private void performStep() {
+		gameCells = controller.getGameCells();
 
 			ArrayList<GameCell> neighbors;
 			ArrayList<GameCell> toActivate = new ArrayList<>();
@@ -37,22 +53,17 @@ public class GameTask implements Runnable {
 			for (GameCell thisCell : toDeactivate) {
 				thisCell.setAlive(false);
 			}
-
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-
 	}
 
+	public void pause(){
+		running = false;
+	}
+	
 	// Return a List of Neighbours for specified cell
 	private ArrayList<GameCell> checkSurroundings(double layoutX, double layoutY) {
 
 		ArrayList<GameCell> neighbors = new ArrayList<>();
-		ArrayList<GameCell> gameCells = model.getGameCells();
+		ArrayList<GameCell> gameCells = controller.getGameCells();
 
 		for (GameCell cell : gameCells) {
 			// Left, Right Hand Neighbors

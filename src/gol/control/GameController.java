@@ -1,10 +1,13 @@
 package gol.control;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import gol.model.GameCell;
-import gol.model.GameLogic;
 import gol.model.GameModel;
+import gol.model.GameTask;
 import gol.view.GameStage;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.Label;
@@ -14,7 +17,8 @@ public class GameController {
 	private GameModel model;
 	private GameStage view;
 	private Integer cellSize;
-	private GameLogic logic;
+	private GameTask runGame;
+	ExecutorService exService;
 
 	public GameController(GameModel model) {
 		this.model = model;
@@ -25,6 +29,7 @@ public class GameController {
 	}
 
 	public void startShow() {
+		view.setTitle("Game of Life");
 		view.show();
 		model.startGame();
 	}
@@ -49,7 +54,7 @@ public class GameController {
 	}
 
 	public void deleteCell(double x, double y) {
-	
+
 		model.deactivateGameCell(x, y);
 	}
 
@@ -57,9 +62,9 @@ public class GameController {
 		model.activateGameCell(layoutX, layoutY);
 
 		ArrayList<GameCell> neighbors = checkSurroundings(layoutX, layoutY);
-		for(int i = 0; i < neighbors.size(); i++){
+		for (int i = 0; i < neighbors.size(); i++) {
 			GameCell currentCell = neighbors.get(i);
-			System.out.println("X: " + currentCell.getX()+" Y: " + currentCell.getY());
+			System.out.println("X: " + currentCell.getX() + " Y: " + currentCell.getY());
 		}
 
 	}
@@ -72,18 +77,18 @@ public class GameController {
 
 		cellSize = view.getCellSize();
 		for (GameCell cell : gameCells) {
-				//Left, Right Hand Neighbors
-			if (layoutX - 1 == cell.getX() && layoutY == cell.getY()||
-				layoutX + 1 == cell.getX() && layoutY == cell.getY()||	
-				//Upper, Lower Neighbors
-				layoutX == cell.getX() && layoutY-1 == cell.getY()||	
-				layoutX == cell.getX() && layoutY+1 == cell.getY()||
-				//Diagonal Neighbors
-				layoutX - 1 == cell.getX() && layoutY - 1 == cell.getY()||
-				layoutX - 1 == cell.getX() && layoutY + 1 == cell.getY()||
-				layoutX + 1 == cell.getX() && layoutY - 1 == cell.getY()||
-				layoutX + 1 == cell.getX() && layoutY + 1 == cell.getY()) {
-				
+			// Left, Right Hand Neighbors
+			if (layoutX - 1 == cell.getX() && layoutY == cell.getY()
+					|| layoutX + 1 == cell.getX() && layoutY == cell.getY() ||
+					// Upper, Lower Neighbors
+					layoutX == cell.getX() && layoutY - 1 == cell.getY()
+					|| layoutX == cell.getX() && layoutY + 1 == cell.getY() ||
+					// Diagonal Neighbors
+					layoutX - 1 == cell.getX() && layoutY - 1 == cell.getY()
+					|| layoutX - 1 == cell.getX() && layoutY + 1 == cell.getY()
+					|| layoutX + 1 == cell.getX() && layoutY - 1 == cell.getY()
+					|| layoutX + 1 == cell.getX() && layoutY + 1 == cell.getY()) {
+
 				if (cell.isAlive()) {
 					System.out.println("Cell width: " + cell.getX() + "Cell height: " + cell.getY());
 					neighbors.add(cell);
@@ -94,23 +99,20 @@ public class GameController {
 		return neighbors;
 	}
 
-	
-
 	public void setupBindings() {
 		ArrayList<GameCell> gameCells = model.getGameCells();
 		ArrayList<Label> labels = view.getLabels();
-		
-		System.out.println("Labels: " + labels.size() +"\n" + "Cells: " + gameCells.size());
-		
-		for(int i=0; i<gameCells.size(); i++){
+
+		System.out.println("Labels: " + labels.size() + "\n" + "Cells: " + gameCells.size());
+
+		for (int i = 0; i < gameCells.size(); i++) {
 			Label label = labels.get(i);
 			GameCell gameCell = gameCells.get(i);
-			
-			
+
 			BooleanProperty activeProperty = label.visibleProperty();
 			BooleanProperty gameCellAlive = gameCell.getIsAlive();
-			
-			//activeProperty.bind(gameCellAlive);
+
+			// activeProperty.bind(gameCellAlive);
 			gameCellAlive.bindBidirectional(activeProperty);
 			System.out.println("Bindings Done!");
 		}
@@ -121,11 +123,27 @@ public class GameController {
 	}
 
 	public void startGame() {
-		logic = new GameLogic(model,this);
-		logic.startGame();
+		exService = Executors.newCachedThreadPool();
+		runGame = new GameTask(this);
+		System.out.println("Run!");
+		exService.execute(runGame);
+
 	}
 
 	public void pauseGame() {
-		logic.pauseGame();
+		runGame.pause();
+
+		exService.shutdown();
+		while (!exService.isTerminated()) {
+			try {
+				exService.awaitTermination(1, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public ArrayList<GameCell> getGameCells() {
+		return model.getGameCells();
 	}
 }
