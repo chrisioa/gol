@@ -137,15 +137,16 @@ public class GameController {
 	}
 
 	public void pauseGame() {
+		if(running){
+			
 		setRunning(false);
 		runGame.pause();
-
 		exService.shutdown();
-
 		try {
 			exService.awaitTermination(1, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
 		}
 
 	}
