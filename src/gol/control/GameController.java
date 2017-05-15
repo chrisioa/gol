@@ -8,18 +8,20 @@ import java.util.concurrent.TimeUnit;
 import gol.model.GameCell;
 import gol.model.GameModel;
 import gol.model.GameTask;
+import gol.model.PresetsGenerator;
 import gol.view.GameStage;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.Label;
 
 public class GameController {
 
-	private GameModel model;
-	private GameStage view;
-	private Integer cellSize;
+	private final GameModel model;
+	private final GameStage view;
+	private final Integer cellSize;
+
 	private GameTask runGame;
-	ExecutorService exService;
-	private int gameSpeed = 100;
+	private ExecutorService exService;
+	private int gameSpeed = 10;
 	private boolean running = false;
 
 	public GameController(GameModel model) {
@@ -33,7 +35,6 @@ public class GameController {
 	public void startShow() {
 		view.setTitle("Game of Life");
 		view.show();
-		model.startGame();
 	}
 
 	public int getNumberOfCells(int i) {
@@ -62,43 +63,6 @@ public class GameController {
 
 	public void activateGameCell(double layoutX, double layoutY) {
 		model.activateGameCell(layoutX, layoutY);
-
-		ArrayList<GameCell> neighbors = checkSurroundings(layoutX, layoutY);
-		for (int i = 0; i < neighbors.size(); i++) {
-			GameCell currentCell = neighbors.get(i);
-			System.out.println("X: " + currentCell.getX() + " Y: " + currentCell.getY());
-		}
-
-	}
-
-	// Return a List of Neighbours
-	private ArrayList<GameCell> checkSurroundings(double layoutX, double layoutY) {
-
-		ArrayList<GameCell> neighbors = new ArrayList<>();
-		ArrayList<GameCell> gameCells = model.getGameCells();
-
-		cellSize = view.getCellSize();
-		for (GameCell cell : gameCells) {
-			// Left, Right Hand Neighbors
-			if (layoutX - 1 == cell.getX() && layoutY == cell.getY()
-					|| layoutX + 1 == cell.getX() && layoutY == cell.getY() ||
-					// Upper, Lower Neighbors
-					layoutX == cell.getX() && layoutY - 1 == cell.getY()
-					|| layoutX == cell.getX() && layoutY + 1 == cell.getY() ||
-					// Diagonal Neighbors
-					layoutX - 1 == cell.getX() && layoutY - 1 == cell.getY()
-					|| layoutX - 1 == cell.getX() && layoutY + 1 == cell.getY()
-					|| layoutX + 1 == cell.getX() && layoutY - 1 == cell.getY()
-					|| layoutX + 1 == cell.getX() && layoutY + 1 == cell.getY()) {
-
-				if (cell.isAlive()) {
-					System.out.println("Cell width: " + cell.getX() + "Cell height: " + cell.getY());
-					neighbors.add(cell);
-				}
-			}
-		}
-		System.out.println("Neighbors: " + neighbors);
-		return neighbors;
 	}
 
 	public void setupBindings() {
@@ -114,9 +78,7 @@ public class GameController {
 			BooleanProperty activeProperty = label.visibleProperty();
 			BooleanProperty gameCellAlive = gameCell.getIsAlive();
 
-			// activeProperty.bind(gameCellAlive);
 			gameCellAlive.bindBidirectional(activeProperty);
-			System.out.println("Bindings Done!");
 		}
 	}
 
@@ -125,7 +87,7 @@ public class GameController {
 	}
 
 	public void startGame() {
-		//Check if already running or not!
+		// Check if already running or not!
 		if (!running) {
 			setRunning(true);
 			exService = Executors.newCachedThreadPool();
@@ -137,18 +99,17 @@ public class GameController {
 	}
 
 	public void pauseGame() {
-		if(running){
-			
-		setRunning(false);
-		runGame.pause();
-		exService.shutdown();
-		try {
-			exService.awaitTermination(1, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		// Check if game is running -> If not, no need to stop executor
+		if (running) {
+			setRunning(false);
+			runGame.pause();
+			exService.shutdown();
+			try {
+				exService.awaitTermination(1, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		}
-
 	}
 
 	public ArrayList<GameCell> getGameCells() {
@@ -175,5 +136,18 @@ public class GameController {
 
 	public void setRunning(boolean running) {
 		this.running = running;
+	}
+
+	public void loadPreset(int preset) {
+		PresetsGenerator presetsGenerator = new PresetsGenerator(this);
+		switch (preset) {
+		case 1:
+			presetsGenerator.koksGalaxy();
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 }

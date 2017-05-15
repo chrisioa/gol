@@ -24,20 +24,15 @@ public class GameModel {
 			}
 		}
 		
-		//logic = new GameLogic(this);
 
 	}
 
-	public void startGame(){
-		//logic.startGame();
-	}
 	
 	// Activate GameCell
 	public void activateGameCell(double layoutX, double layoutY) {
 		for (GameCell cell : gameCells) {
 			if (layoutX == cell.getX() && layoutY == cell.getY()) {
 				cell.setAlive(true);
-				//logic.checkSurroundings(cell);
 				break;
 			}
 		}

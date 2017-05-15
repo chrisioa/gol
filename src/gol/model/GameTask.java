@@ -16,12 +16,10 @@ public class GameTask implements Runnable {
 	
 	@Override
 	public void run() {
-	
+		//This represents the life cycle with the gameSpeed being used as a delay between steps
 		while(running){
 			performStep();	
 			try {
-				//TODO: Make a slider or something 
-				//This effectively is the speed of the game (Wait between steps)
 				Thread.sleep(getGameSpeed());
 			} catch (InterruptedException ignored) {
 			}
@@ -46,11 +44,11 @@ public class GameTask implements Runnable {
 					toActivate.add(thisCell);
 				}
 			}
-
+			//Activate cells
 			for (GameCell thisCell : toActivate) {
-				System.out.println("Set alive");
 				thisCell.setAlive(true);
 			}
+			//Deactivate cells
 			for (GameCell thisCell : toDeactivate) {
 				thisCell.setAlive(false);
 			}
@@ -80,12 +78,10 @@ public class GameTask implements Runnable {
 					|| layoutX + 1 == cell.getX() && layoutY + 1 == cell.getY()) {
 
 				if (cell.isAlive()) {
-					System.out.println("Cell width: " + cell.getX() + "Cell height: " + cell.getY());
 					neighbors.add(cell);
 				}
 			}
 		}
-		System.out.println("Neighbors: " + neighbors);
 		return neighbors;
 	}
 

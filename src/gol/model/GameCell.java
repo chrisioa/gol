@@ -20,7 +20,6 @@ public class GameCell {
 		return isAliveProperty.get();
 	}
 	public void setAlive(boolean isAlive) {
-		System.out.println("Set alive X: " + x + " Y: " + y);
 		isAliveProperty.set(isAlive);
 		
 	}

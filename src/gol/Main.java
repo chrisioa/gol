@@ -13,7 +13,7 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
 		// Create Model
-		GameModel model = new GameModel(20,35);
+		GameModel model = new GameModel(30,30);
 		// Create Controller and view
 		GameController controller = new GameController(model);
 		// Show the view via controller

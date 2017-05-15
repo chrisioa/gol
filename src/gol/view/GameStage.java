@@ -25,13 +25,11 @@ public class GameStage extends Stage {
 	private final int cellsNumberWidth;
 	private final int cellsNumberHeight;
 	private double scale = 1;
-	private static final Integer cellSize = 30;
+	private static final Integer cellSize = 20;
 	private static final double tileSize = cellSize - 5;
 	private Group board;
-	private GameController control;
 
 	public GameStage(GameController control) {
-		this.control = control;
 		cellsNumberHeight = control.getNumberOfCells(0);
 		cellsNumberWidth = control.getNumberOfCells(1);
 
@@ -66,7 +64,6 @@ public class GameStage extends Stage {
 			@Override
 			public void handle(WindowEvent event) {
 				alertCloseView();
-				//TODO: Null CHECK!!!!
 				control.pauseGame();
 			}
 		});

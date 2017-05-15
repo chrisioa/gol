@@ -10,6 +10,7 @@ import javafx.scene.control.ToolBar;
 public class MyToolbar extends ToolBar {
 
 	private GameController control;
+	private int initialSpeed = 100;
 
 	public MyToolbar(String id, GameController control) {
 		this.control = control;
@@ -50,9 +51,8 @@ public class MyToolbar extends ToolBar {
 		});
 		this.getItems().add(pauseButton);
 
-		// Slider TODO: Implement this
-		Slider gameSpeedSlider = new Slider(10, 5000, 500);
-
+		Slider gameSpeedSlider = new Slider(10, 250, initialSpeed);
+		control.setGameSpeed(initialSpeed);
 		
 		gameSpeedSlider.valueProperty().addListener(
 		        (observable, oldvalue, newvalue) ->

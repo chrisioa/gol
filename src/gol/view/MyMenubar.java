@@ -38,10 +38,19 @@ public class MyMenubar extends MenuBar {
 				control.resetGame();
 			}
 		});
+		
+		MenuItem presetOne = new MenuItem("Kok's Galaxy");
+		presetOne.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				control.loadPreset(1);
+			}
+		});
 		// MenuItems zu Menu hinzufuegen
 		file.getItems().add(startGame);
 		file.getItems().add(pauseGame);
 		file.getItems().add(resetGame);
+		file.getItems().add(presetOne);
 		Menu about = new Menu("About");
 		// Menu zu MenuBar hinzufuegen
 		this.getMenus().add(file);
