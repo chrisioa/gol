@@ -39,18 +39,32 @@ public class MyMenubar extends MenuBar {
 			}
 		});
 		
-		MenuItem presetOne = new MenuItem("Kok's Galaxy");
-		presetOne.setOnAction(new EventHandler<ActionEvent>() {
+		//Sub-Menu
+		Menu subMenu_Presets = new Menu("Presets");
+		//First Submenu
+		MenuItem subMenu_presetOne = new MenuItem("Kok's Galaxy");
+		subMenu_presetOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				control.loadPreset(1);
 			}
 		});
+		//Second Submenu
+		MenuItem subMenu_presetTwo = new MenuItem("Gosper Glider Gun");
+		subMenu_presetTwo.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				control.loadPreset(2);
+			}
+		});
+		subMenu_Presets.getItems().addAll(subMenu_presetOne,subMenu_presetTwo);
+		
 		// MenuItems zu Menu hinzufuegen
 		file.getItems().add(startGame);
 		file.getItems().add(pauseGame);
 		file.getItems().add(resetGame);
-		file.getItems().add(presetOne);
+		file.getItems().add(subMenu_Presets);
 		Menu about = new Menu("About");
 		// Menu zu MenuBar hinzufuegen
 		this.getMenus().add(file);

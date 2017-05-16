@@ -144,7 +144,8 @@ public class GameController {
 		case 1:
 			presetsGenerator.koksGalaxy();
 			break;
-
+		case 2:
+			presetsGenerator.gosperGliderGun();
 		default:
 			break;
 		}

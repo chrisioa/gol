@@ -60,5 +60,56 @@ public class PresetsGenerator {
 		control.activateGameCell(14, 14);
 		
 	}
+	
+	public void gosperGliderGun(){
+		//line 1
+		control.activateGameCell(35,11);
+		//line 2
+		control.activateGameCell(33, 12);
+		control.activateGameCell(35, 12);
+		//line 3
+		control.activateGameCell(23, 13);
+		control.activateGameCell(24, 13);
+		control.activateGameCell(31, 13);
+		control.activateGameCell(32, 13);
+		control.activateGameCell(45, 13);
+		control.activateGameCell(46, 13);
+		
+		//line 4
+		control.activateGameCell(22, 14);
+		control.activateGameCell(26, 14);
+		control.activateGameCell(31, 14);
+		control.activateGameCell(32, 14);
+		control.activateGameCell(45, 14);
+		control.activateGameCell(46, 14);
+		//line 5
+		control.activateGameCell(11, 15);
+		control.activateGameCell(12, 15);
+		control.activateGameCell(21, 15);
+		control.activateGameCell(27, 15);
+		control.activateGameCell(31, 15);
+		control.activateGameCell(32, 15);
+		//line 6
+		control.activateGameCell(11, 16);
+		control.activateGameCell(12, 16);
+		control.activateGameCell(21, 16);
+		control.activateGameCell(25, 16);
+		control.activateGameCell(27, 16);
+		control.activateGameCell(28, 16);
+		control.activateGameCell(33, 16);
+		control.activateGameCell(35, 16);
+		//line 7
+		control.activateGameCell(21, 17);
+		control.activateGameCell(27, 17);
+		control.activateGameCell(35, 17);
+		//line 8
+		control.activateGameCell(22, 18);
+		control.activateGameCell(26, 18);
+		//line9
+		control.activateGameCell(23, 19);
+		control.activateGameCell(24, 19);
+				
+		
+	}
 
 }
