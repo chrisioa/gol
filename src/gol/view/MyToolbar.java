@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
+import javafx.scene.text.Text;
 
 public class MyToolbar extends ToolBar {
 
@@ -51,6 +52,11 @@ public class MyToolbar extends ToolBar {
 		});
 		this.getItems().add(pauseButton);
 
+		//Text Field for GameSpeed
+		Text gameSpeedText = new Text("Delay between steps: " + initialSpeed +"ms");
+		this.getItems().add(gameSpeedText);
+		
+		//Make and add Slider for GameSpeed control
 		Slider gameSpeedSlider = new Slider(10, 250, initialSpeed);
 		control.setGameSpeed(initialSpeed);
 		
@@ -58,9 +64,16 @@ public class MyToolbar extends ToolBar {
 		        (observable, oldvalue, newvalue) ->
 		        {
 		            int i = newvalue.intValue();
+		           //This sets the delay in the controller
 		           control.setGameSpeed(i);
+		           //Text Label that displays delay
+		           gameSpeedText.setText("Delay between steps: " + i +"ms");
 		        } );
 		
 		this.getItems().add(gameSpeedSlider);
+	
+		
+		
 	}
+	
 }

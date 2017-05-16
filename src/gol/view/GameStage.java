@@ -25,7 +25,7 @@ public class GameStage extends Stage {
 	private final int cellsNumberWidth;
 	private final int cellsNumberHeight;
 	private double scale = 1;
-	private static final Integer cellSize = 20;
+	private static final Integer cellSize = 10;
 	private static final double tileSize = cellSize - 5;
 	private Group board;
 
@@ -106,7 +106,7 @@ public class GameStage extends Stage {
 				}));
 
 	}
-	
+	//Alert for Exit (Confirmation from user needed)
 	public void alertCloseView() {
 		Alert exitAlert = new Alert(Alert.AlertType.CONFIRMATION);
 		exitAlert.setTitle("Exit");
