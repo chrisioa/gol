@@ -1,71 +1,45 @@
 package gol.model;
 
-import java.util.ArrayList;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 public class GameModel {
 
 	private int gamewidth;
 	private int gameheight;
 	private double cellSize;
-	//private GameLogic logic;
-	
-	private ArrayList<GameCell> gameCells = new ArrayList<>();
+	// private GameLogic logic;
+
+	// private ArrayList<GameCell> gameCells = new ArrayList<>();
+
+	private BooleanProperty[][] gameCells;
 
 	public GameModel(int width, int height) {
 
 		setGameheight(height);
 		setGamewidth(width);
-
+		gameCells = new BooleanProperty[width][height];
 		// initialize gameCells
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				GameCell gc = new GameCell(i, j, false);
-				gameCells.add(gc);
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				gameCells[i][j] = new SimpleBooleanProperty(false);
 			}
 		}
-		
 
 	}
 
-	
 	// Activate GameCell
-	public void activateGameCell(double layoutX, double layoutY) {
-		for (GameCell cell : gameCells) {
-			if (layoutX == cell.getX() && layoutY == cell.getY()) {
-				cell.setAlive(true);
-				break;
-			}
-		}
+	public void activateGameCell(int layoutX, int layoutY) {
+		gameCells[layoutX][layoutY].set(true);
 	}
 
-	public void deactivateGameCell(double layoutX, double layoutY) {
-		for (GameCell cell : gameCells) {
-			if (layoutX == cell.getX() && layoutY == cell.getY()) {
-				cell.setAlive(false);
-				//logic.checkSurroundings(cell);
-				break;
-			}
-		}
-	}
-	
-	public void deactivateGameCellNOCHECK(double layoutX, double layoutY){
-		for (GameCell cell : gameCells) {
-			if (layoutX == cell.getX() && layoutY == cell.getY()) {
-				cell.setAlive(false);
-				break;
-			}
-		}
+	public void deactivateGameCell(int layoutX, int layoutY) {
+		gameCells[layoutX][layoutY].set(false);
 	}
 
-	public boolean isAlive(double x, double y) {
-		for (GameCell cell : gameCells) {
-			if (cell.getY() == y) {
-				if (cell.getY() == x) {
-					return cell.isAlive();
-				}
-			}
-		}
-		return false;
+	public boolean isAlive(int x, int y) {
+
+		return gameCells[x][y].get();
 	}
 
 	// Getter and Setter for variables
@@ -86,21 +60,23 @@ public class GameModel {
 		this.gameheight = gameheight;
 	}
 
-	public ArrayList<GameCell> getGameCells() {
+	public BooleanProperty[][] getGameCells() {
 		return gameCells;
 	}
 
 	public void setCellSize(Integer cellSize) {
 		this.cellSize = cellSize;
 	}
-	
-	public double getCellSize(){
+
+	public double getCellSize() {
 		return cellSize;
 	}
 
 	public void deactivateAllGameCells() {
-		for(GameCell gc : gameCells){
-			gc.setAlive(false);
+		for (int i = 0; i < gameCells.length; i++) {
+			for (int j = 0; j < gameCells[i].length; j++) {
+				gameCells[i][j].set(false);
+			}
 		}
 	}
 

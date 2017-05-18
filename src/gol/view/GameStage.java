@@ -1,6 +1,5 @@
 package gol.view;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -21,11 +20,11 @@ import javafx.stage.WindowEvent;
 
 public class GameStage extends Stage {
 
-	private ArrayList<Label> allLabels = new ArrayList<Label>();
+	private Label[][] allLabels ;
 	private final int cellsNumberWidth;
 	private final int cellsNumberHeight;
 	private double scale = 1;
-	private static final Integer cellSize = 15;
+	private static final Integer cellSize = 10;
 	private static final double tileSize = cellSize - 5;
 	private Group board;
 
@@ -71,12 +70,12 @@ public class GameStage extends Stage {
 	}
 
 	private void createLabels(Group board) {
-
-		for (int i = 0; i < cellsNumberHeight; i++) {
-			for (int j = 0; j < cellsNumberWidth; j++) {
+		allLabels = new Label[cellsNumberWidth][cellsNumberHeight];
+		for (int i = 0; i < cellsNumberWidth; i++) {
+			for (int j = 0; j < cellsNumberHeight; j++) {
 				Label label = createLabel(i, j);
 				board.getChildren().add(label);
-				allLabels.add(label);
+				allLabels[i][j]=label;
 			}
 		}
 
@@ -86,8 +85,8 @@ public class GameStage extends Stage {
 		Label label = new Label();
 		label.setMinSize(tileSize * scale, tileSize * scale);
 		label.setPrefSize(tileSize * scale, tileSize * scale);
-		label.setMaxSize(tileSize * scale, tileSize * scale);
-		label.setStyle("-fx-background-color: red; -fx-background-radius: 10");
+		label.setMaxSize(cellSize, cellSize);
+		label.setStyle("-fx-background-color: orange; -fx-background-radius: 10");
 		label.setLayoutX((width + 0.5) * cellSize - tileSize / 2);
 		label.setLayoutY((height + 0.5) * cellSize - tileSize / 2);
 		label.setVisible(false);
@@ -97,8 +96,8 @@ public class GameStage extends Stage {
 
 	private void drawGrid(Group group) {
 		// create background square grid
-		IntStream.range(0, cellsNumberHeight).boxed()
-				.forEach(i -> IntStream.range(0, cellsNumberWidth).boxed().forEach(j -> {
+		IntStream.range(0, cellsNumberWidth).boxed()
+				.forEach(i -> IntStream.range(0, cellsNumberHeight).boxed().forEach(j -> {
 					Rectangle cell = new Rectangle(i * cellSize, j * cellSize, cellSize, cellSize);
 					cell.setFill(Color.WHITE);
 					cell.setStroke(Color.GREY);
@@ -128,7 +127,7 @@ public class GameStage extends Stage {
 		return tileSize;
 	}
 
-	public ArrayList<Label> getLabels() {
+	public Label[][] getLabels() {
 		return allLabels;
 	}
 

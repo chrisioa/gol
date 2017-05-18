@@ -1,11 +1,9 @@
 package gol.control;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import gol.model.GameCell;
 import gol.model.GameModel;
 import gol.model.GameTask;
 import gol.model.PresetsGenerator;
@@ -52,33 +50,35 @@ public class GameController {
 
 	}
 
-	public boolean checkAlive(double x, double y) {
+	public boolean checkAlive(int x, int y) {
 		return model.isAlive(y, x);
 	}
 
-	public void deleteCell(double x, double y) {
+	public void deleteCell(int x, int y) {
 
 		model.deactivateGameCell(x, y);
 	}
 
-	public void activateGameCell(double layoutX, double layoutY) {
+	public void activateGameCell(int layoutX, int layoutY) {
 		model.activateGameCell(layoutX, layoutY);
 	}
 
 	public void setupBindings() {
-		ArrayList<GameCell> gameCells = model.getGameCells();
-		ArrayList<Label> labels = view.getLabels();
+		BooleanProperty[][] gameCells = model.getGameCells();
+		Label[][] labels = view.getLabels();
 
-		System.out.println("Labels: " + labels.size() + "\n" + "Cells: " + gameCells.size());
+		System.out.println("Labels: " + labels.length + "\n" + "Cells: " + gameCells.length);
 
-		for (int i = 0; i < gameCells.size(); i++) {
-			Label label = labels.get(i);
-			GameCell gameCell = gameCells.get(i);
+		for (int i = 0; i < gameCells.length; i++) {
+			for(int j = 0; j < gameCells[i].length;j++){
+				
+			Label label = labels[i][j];
 
 			BooleanProperty activeProperty = label.visibleProperty();
-			BooleanProperty gameCellAlive = gameCell.getIsAlive();
+			BooleanProperty gameCellAlive = gameCells[i][j];
 
 			gameCellAlive.bindBidirectional(activeProperty);
+			}
 		}
 	}
 
@@ -112,7 +112,7 @@ public class GameController {
 		}
 	}
 
-	public ArrayList<GameCell> getGameCells() {
+	public BooleanProperty[][] getGameCells() {
 		return model.getGameCells();
 	}
 
