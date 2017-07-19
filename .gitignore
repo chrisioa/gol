@@ -2,6 +2,11 @@
 # lines starting with # are comments
 bin/
 data/
+#IntelliJ specific dir
+.idea/
+*.iml
+.directory
+
 *.class
 # Package Files
 *.zip
