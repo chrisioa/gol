@@ -24,7 +24,7 @@ public class GameStage extends Stage {
 	private final int cellsNumberWidth;
 	private final int cellsNumberHeight;
 	private double scale = 1;
-	private static final Integer cellSize = 10;
+	private static final Integer cellSize = 15;
 	private static final double tileSize = cellSize - 5;
 	private Group board;
 
